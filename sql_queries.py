@@ -28,13 +28,12 @@ time_table_drop = drop_table(TIME)
 
 
 # CREATE TABLES
-staging_events_table_create = f"""create type gender_type as enum ('M', 'F');
-create table {STAGING_EVENTS} (
+staging_events_table_create = f"""create table {STAGING_EVENTS} (
     event_id int identity(0,1),
     artist_name varchar(255),
     auth varchar(50),
     user_first_name varchar(255),
-    user_gender gender_type,
+    user_gender char(1),
     item_in_session	integer,
     user_last_name varchar(255),
     song_length	float,
@@ -82,12 +81,11 @@ songplay_table_create = f"""create table {SONGPLAYS} (
 )
 ;"""
 
-user_table_create = f"""create type gender_type as enum ('M', 'F');
-create table {USERS} (
+user_table_create = f"""create table {USERS} (
     user_id varchar,
     first_name varchar(255),
     last_name varchar(255),
-    gender gender_type,
+    gender char(1),
     level varchar(50),
     primary key (user_id)
 )
@@ -131,7 +129,7 @@ s3_log_data = config.get("S3", "LOG_DATA")
 s3_song_data = config.get("S3", "SONG_DATA")
 s3_log_jsonpath = config.get("S3", "LOG_JSONPATH")
 iam_role = config.get("IAM_ROLE", "ARN")
-staging_events_copy = ("""copy {} from {} iam_role {} json {}""").format(
+staging_events_copy = ("""copy {} from {} iam_role {} json {};""").format(
     STAGING_EVENTS,
     s3_log_data,
     iam_role,
@@ -236,5 +234,6 @@ if __name__ == "__main__":
     print(user_table_create)
     print()
     print(staging_events_copy)
+    print(staging_songs_copy)
     print()
     print(artist_table_insert)
