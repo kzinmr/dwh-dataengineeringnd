@@ -14,7 +14,15 @@ TIME = "time"
 
 
 # DROP TABLES
-def drop_table(table) -> str:
+def drop_table(table: str) -> str:
+    """DROP query template.
+
+    Args:
+        table: name of a table to drop.
+    Returns:
+        DROP query.
+    Raises:
+    """
     return "drop table if exists {};".format(table)
 
 
