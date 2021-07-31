@@ -166,28 +166,32 @@ where e.page = 'NextSong'
   and e.song_length = s.duration
 ;"""
 
-user_table_insert = f"""insert into {USERS} (user_id, first_name, last_name, gender, level)
+user_table_insert = f"""insert into {USERS}
+ (user_id, first_name, last_name, gender, level)
 select distinct
   user_id, user_first_name, user_last_name, user_gender, user_level
 from staging_events
 where page = 'NextSong'
 ;"""
 
-song_table_insert = f"""insert into {SONGS} (song_id, title, artist_id, year, duration)
+song_table_insert = f"""insert into {SONGS}
+ (song_id, title, artist_id, year, duration)
 select distinct
   song_id, title, artist_id, year, duration
 from {STAGING_SONGS}
 where song_id is not null
 ;"""
 
-artist_table_insert = f"""insert into {ARTISTS} (artist_id, name, location, latitude, longitude)
+artist_table_insert = f"""insert into {ARTISTS}
+ (artist_id, name, location, latitude, longitude)
 select distinct
   artist_id, artist_name, artist_location, artist_latitude, artist_longitude
 from {STAGING_SONGS}
 where artist_id is not null
 ;"""
 
-time_table_insert = f"""insert into {TIME} (start_time, hour, day, week, month, year, weekday)
+time_table_insert = f"""insert into {TIME}
+ (start_time, hour, day, week, month, year, weekday)
 select
   start_time,
   extract(hour from start_time),
