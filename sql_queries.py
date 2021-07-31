@@ -231,14 +231,10 @@ insert_table_queries = [
 ]
 
 if __name__ == "__main__":
-    print("drop sample")
     print(songplay_table_drop)
     print()
-    print("create sample")
     print(user_table_create)
     print()
-    print("copy sample")
     print(staging_events_copy)
     print()
-    print("insert sample")
     print(artist_table_insert)
